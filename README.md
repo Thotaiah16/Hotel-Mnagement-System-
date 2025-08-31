@@ -1,6 +1,8 @@
 # Hotel Management System
 
-Welcome to the Hotel Management System — a robust, enterprise-grade solution designed to revolutionize hotel operations through dual applications: a powerful Desktop Manager for staff and a dynamic Spring Boot Web Application for customers, both unified by a centralized MySQL database ensuring real-time data consistency across all business operations.[1]
+**A Comprehensive Two-Part Solution for Modern Hotel Operations**
+
+Welcome to the Hotel Management System — a robust, enterprise-grade solution designed to revolutionize hotel operations through dual applications: a powerful Desktop Manager for staff and a dynamic Spring Boot Web Application for customers, both unified by a centralized MySQL database ensuring real-time data consistency across all business operations.
 
 ## 🏨 Desktop Manager Application
 **Professional Hotel Staff Operations Platform**
@@ -62,10 +64,10 @@ A modern Spring Boot web application providing customers with seamless access to
 
 ## 🚀 Getting Started
 
-### **Prerequisites**
+### **Prerequisites & Download Links**
 - **JDK 21**: Latest Java Development Kit
-- **Apache NetBeans IDE**: Development environment
-- **XAMPP**: Apache and MySQL server management
+- **Apache NetBeans IDE**: Here is the Download Link https://netbeans.apache.org/
+- **XAMPP**: Here is the Download Link https://www.apachefriends.org/
 - **JavaFX SDK 21**: UI framework libraries
 
 ### **Quick Setup**
@@ -96,10 +98,15 @@ A modern Spring Boot web application providing customers with seamless access to
    # Run application (auto-starts server)
    ```
 
+### **Installation Notes**
+- **NetBeans**: Download the latest stable version from the official Apache NetBeans website. The platform-independent ZIP version (approximately 95MB) is recommended for cross-platform compatibility[6]
+- **XAMPP**: Required for local MySQL database management and Apache server functionality
+- **Gmail Configuration**: Enable 2-factor authentication and generate an App Password for OTP email delivery
+
 ## 🔒 Security Architecture
 
 Both applications implement enterprise-grade security measures:
-- **BCrypt Password Hashing**: Military-grade encryption for all user credentials[2][1]
+- **BCrypt Password Hashing**: Military-grade encryption for all user credentials
 - **Session Management**: Secure server-side session handling
 - **OTP Verification**: Two-factor authentication for account registration
 - **Role-Based Access**: Hierarchical permission systems
