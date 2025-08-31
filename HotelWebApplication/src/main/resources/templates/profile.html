@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Hotel Raar</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .profile-header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .profile-header h1 { color: #0a2463; margin-bottom: 10px; }
+
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #0a2463;
+            color: white;
+            padding: 20px 30px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .section-content { padding: 20px 30px; }
+
+        .booking-card, .order-card {
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .booking-card:hover, .order-card:hover {
+            border-color: #0a2463;
+            box-shadow: 0 5px 15px rgba(10, 36, 99, 0.1);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-confirmed { background: #d4edda; color: #155724; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .detail-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .detail-label { font-weight: 600; color: #666; font-size: 0.9em; }
+        .detail-value { color: #333; font-weight: 500; }
+
+        .no-data { text-align: center; padding: 40px; color: #666; }
+
+        .confirmation-id {
+            font-family: monospace;
+            background: #0a2463;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <h1>👤 My Profile</h1>
+            <p>Welcome back, <strong th:text="${username}">User</strong>!</p>
+        </div>
+
+        <!-- Room Bookings Section -->
+        <div class="section">
+            <div class="section-header">
+                🏨 My Room Bookings
+            </div>
+            <div class="section-content">
+                <div th:if="${not #lists.isEmpty(bookings)}">
+                    <div th:each="booking : ${bookings}" class="booking-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3>Room Booking</h3>
+                            <div>
+                                <span class="status-badge status-confirmed" th:text="${booking.status}">CONFIRMED</span>
+                                <span class="confirmation-id">ID: <span th:text="${booking.id}">12345</span></span>
+                            </div>
+                        </div>
+                        
+                        <div class="booking-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Room Number</div>
+                                <div class="detail-value" th:text="${booking.roomId}">101</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Check-in Date</div>
+                                <div class="detail-value" th:text="${booking.checkIn}">2025-08-25</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Check-out Date</div>
+                                <div class="detail-value" th:text="${booking.checkOut}">2025-08-27</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Booking Date</div>
+                                <div class="detail-value" th:text="${booking.bookingDate}">2025-08-24</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Total Amount</div>
+                                <div class="detail-value">₹<span th:text="${booking.totalPrice}">5000</span></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Status</div>
+                                <div class="detail-value">
+                                    <span class="status-badge status-confirmed" th:text="${booking.status}">CONFIRMED</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div th:if="${#lists.isEmpty(bookings)}" class="no-data">
+                    <h3>No Room Bookings Yet</h3>
+                    <p>You haven't made any room bookings yet. <a href="/room-booking">Book a room now!</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Orders Section -->
+        <div class="section">
+            <div class="section-header">
+                🍽️ My Food Orders
+            </div>
+            <div class="section-content">
+                <div th:if="${not #lists.isEmpty(foodOrders)}">
+                    <div th:each="order : ${foodOrders}" class="order-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 th:text="${order.foodName}">Food Item</h3>
+                            <div>
+                                <span class="status-badge status-confirmed" th:text="${order.status}">CONFIRMED</span>
+                                <span class="confirmation-id">ID: <span th:text="${order.id}">67890</span></span>
+                            </div>
+                        </div>
+                        
+                        <div class="booking-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Item Name</div>
+                                <div class="detail-value" th:text="${order.foodName}">Chicken Biryani</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Quantity</div>
+                                <div class="detail-value" th:text="${order.quantity}">2</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Order Date</div>
+                                <div class="detail-value" th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}">24-08-2025 17:30</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Total Amount</div>
+                                <div class="detail-value">₹<span th:text="${order.totalPrice}">500</span></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Status</div>
+                                <div class="detail-value">
+                                    <span class="status-badge status-confirmed" th:text="${order.status}">CONFIRMED</span>
+                                </div>
+                            </div>
+                            <div class="detail-item" th:if="${order.specialInstructions != null and !order.specialInstructions.isEmpty()}">
+                                <div class="detail-label">Special Instructions</div>
+                                <div class="detail-value" th:text="${order.specialInstructions}">No spicy</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div th:if="${#lists.isEmpty(foodOrders)}" class="no-data">
+                    <h3>No Food Orders Yet</h3>
+                    <p>You haven't placed any food orders yet. <a href="/order-food">Order food now!</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/dashboard" style="background: #0a2463; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; margin: 0 10px;">🏠 Dashboard</a>
+            <a href="/room-booking" style="background: #28a745; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; margin: 0 10px;">🏨 Book Room</a>
+            <a href="/order-food" style="background: #fd7e14; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; margin: 0 10px;">🍽️ Order Food</a>
+        </div>
+    </div>
+</body>
+</html>

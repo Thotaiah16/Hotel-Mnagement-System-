@@ -1,0 +1,27 @@
+{
+    "elements": {},
+    "attributes": {
+        "th:classappend": {
+            "context": "div"
+        },
+        "th:text": {
+            "context": "span"
+        },
+        "th:if": {
+            "context": "div"
+        },
+        "th:src": {
+            "context": "img"
+        },
+        "th:action": {
+            "context": "form"
+        },
+        "th:href": {
+            "context": "a"
+        },
+        "th:each": {
+            "context": "div"
+        },
+        "th:value": {}
+    }
+}
