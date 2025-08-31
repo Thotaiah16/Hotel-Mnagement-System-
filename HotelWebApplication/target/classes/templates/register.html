@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Hotel Crescent</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; overflow: hidden; }
+        .main-container { display: flex; width: 100vw; height: 100vh; }
+
+        
+        .slideshow-container { flex: 1; position: relative; background-color: #333; overflow: hidden; }
+        .slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; animation: fadeEffect 24s infinite; }
+        .slide:nth-child(1) { background-image: url('https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg'); animation-delay: 0s; }
+        .slide:nth-child(2) { background-image: url('https://images.pexels.com/photos/262047/pexels-photo-262047.jpeg'); animation-delay: 6s; }
+        .slide:nth-child(3) { background-image: url('https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg'); animation-delay: 12s; }
+        .slide:nth-child(4) { background-image: url('https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg'); animation-delay: 18s; }
+        @keyframes fadeEffect {
+            0% { opacity: 0; transform: scale(1.1); }
+            12.5% { opacity: 1; transform: scale(1); }
+            25% { opacity: 1; transform: scale(1); }
+            37.5% { opacity: 0; transform: scale(1.1); }
+            100% { opacity: 0; }
+        }
+
+      
+        .form-container { flex: 1; display: flex; justify-content: center; align-items: center; background-color: #f4f7f6; }
+        .form-wrapper { width: 80%; max-width: 400px; padding: 40px; background-color: white; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); border-radius: 12px; text-align: center; }
+        .header { font-size: 28px; font-weight: 600; color: #0a2463; margin-bottom: 25px; }
+        p { color: #666; margin-bottom: 25px; font-size: 1em; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; font-weight: 400; color: #555; }
+        input { width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 6px; font-family: 'Poppins', sans-serif; transition: border-color 0.3s ease; }
+        input:focus { outline: none; border-color: #0a2463; }
+        button { width: 100%; padding: 12px 15px; background-color: #0a2463; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; transition: background-color 0.3s ease; }
+        button:hover { background-color: #1e3b8a; }
+        .error-message { color: #dc3545; margin-bottom: 15px; font-weight: 600; }
+
+        
+        @media (max-width: 768px) {
+            .main-container { flex-direction: column; height: auto; overflow: auto; }
+            .slideshow-container { height: 40vh; }
+            .form-container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="slideshow-container">
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+    </div>
+
+    <div class="form-container">
+        <div class="form-wrapper">
+            <h1 class="header">Hotel Management System</h1>
+
+            <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
+            <div id="register-section" th:if="${showRegisterForm}">
+                <p>Create your new account</p>
+                <form action="/register" method="post">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number:</label>
+                        <input type="tel" id="mobile" name="mobile" required>
+                    </div>
+                    <button type="submit">Send OTP</button>
+                </form>
+            </div>
+
+            <div id="otp-section" th:if="${showOtpForm}">
+                <p>An OTP has been sent to your email. Please enter it below.</p>
+                <form action="/verify-otp" method="post">
+                    <div class="form-group">
+                        <label for="otp">Enter 6-Digit OTP:</label>
+                        <input type="text" id="otp" name="otp" required maxlength="6">
+                    </div>
+                    <button type="submit">Verify</button>
+                </form>
+            </div>
+
+            <div id="password-section" th:if="${showPasswordForm}">
+                <p>OTP Verified! Now, create your password.</p>
+                <form id="password-form" action="/set-password" method="post">
+                    <div class="form-group">
+                        <label for="password">Create Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Re-enter Password:</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                    </div>
+                    <button type="submit">Complete Registration</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    const passwordForm = document.getElementById('password-form');
+    if (passwordForm) {
+        passwordForm.addEventListener('submit', function(event) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                event.preventDefault(); 
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
